@@ -70,6 +70,9 @@ async def async_create_refresh_token78(
     _hass.auth._store._async_schedule_save()
     return refresh_token
 
+def loadJson(url: str) -> object:
+    return json.loads(urlopen(url).read().decode('utf-8'))['data']
+
 async def async_setup(hass, config):
     global _hass, _expire_hours
     _hass         = hass
@@ -83,8 +86,10 @@ async def async_setup(hass, config):
     _hass.http.register_view(AliGenieGateView)
 
     global _places, _aliases
-    _places  = json.loads(urlopen('https://open.bot.tmall.com/oauth/api/placelist').read().decode('utf-8'))['data']
-    _aliases = json.loads(urlopen('https://open.bot.tmall.com/oauth/api/aliaslist').read().decode('utf-8'))['data']
+    #_places  = json.loads(urlopen('https://open.bot.tmall.com/oauth/api/placelist').read().decode('utf-8'))['data']
+    _places  = await hass.async_add_executor_job(loadJson, 'https://open.bot.tmall.com/oauth/api/placelist')
+    # _aliases = json.loads(urlopen('https://open.bot.tmall.com/oauth/api/aliaslist').read().decode('utf-8'))['data']
+    _aliases  = await hass.async_add_executor_job(loadJson, 'https://open.bot.tmall.com/oauth/api/aliaslist')
     _aliases.append({'key': '电视', 'value': ['电视机']})
     return True
 

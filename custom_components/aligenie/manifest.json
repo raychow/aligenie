@@ -1,10 +1,10 @@
 {
   "domain": "aligenie",
   "name": "aligenie",
-  "documentation": "https://github.com/Yonsm/HAExtra/tree/master/hagenie",
+  "documentation": "",
   "requirements": [],
   "dependencies": [],
   "codeowners": [
-    "@Yonsm"
+    "@dylan"
   ]
 }
